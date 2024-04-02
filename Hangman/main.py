@@ -1,7 +1,13 @@
 import random
 import sys
 
-words_list = ["yellow", "hello"]
+
+def retrieve_list():
+    file = open("./textfiles/words.txt", "r")
+    return [word.strip() for word in file.readlines()]
+
+
+words_list = retrieve_list()
 
 
 def select_random_word():
@@ -118,7 +124,7 @@ def evaluate(guess):
 
             found = True
         elif answer[index] == guess:
-            print("you have already found : "+player_guess)
+            print("you have already found : " + player_guess)
 
     if "".join(generated_hint) == answer:
         print(f"you win it took {turns_taken} turn(s).")
