@@ -7,6 +7,16 @@ def retrieve_list():
     return [word.strip() for word in file.readlines()]
 
 
+def get_user_input():
+    while True:
+        player_input = input("Please enter your guess below : \n").lower()
+
+        if len(player_input) == 1 or len(player_input) == len(answer):
+            return player_input
+        else:
+            print("Please enter a single character or word the same length as the hint.")
+
+
 words_list = retrieve_list()
 
 
@@ -27,7 +37,11 @@ def hint(answer: str):
 
 
 def start(hidden_word):
-    print("can you guess the word : " + "".join(hidden_word))
+    if state == "":
+        print("can you guess the word : " + "".join(hidden_word))
+        return
+
+    print(state + " , can you guess the word : " + "".join(hidden_word))
 
 
 def print_stick_figure(incorrect_guesses):
@@ -109,6 +123,7 @@ def print_stick_figure(incorrect_guesses):
 
 generated_hint, answer = hint(select_random_word())
 
+state = ""
 player_guess = ""
 turns_taken = 0
 incorrect_guess = 0
@@ -116,6 +131,7 @@ max_turns = 6
 
 
 def evaluate(guess):
+    global state
     found = False
 
     for index in range(len(answer)):
@@ -124,22 +140,26 @@ def evaluate(guess):
 
             found = True
         elif answer[index] == guess:
-            print("you have already found : " + player_guess)
+            state = "you have already found : " + player_guess
 
     if "".join(generated_hint) == answer:
-        print(f"you win it took {turns_taken} turn(s).")
+        print(f"you win it took {turns_taken} turn(s) , the word was {answer}")
         sys.exit(0)
 
     if not found:
-        print("incorrect")
+        if state== "you have already found : " + player_guess:
+            return 1
+
+        state = "incorrect"
         return 1
-    print("correct")
+
+    state = "correct"
     return 0
 
 
 while turns_taken <= max_turns:
     start(generated_hint)
-    player_guess = input()
+    player_guess = get_user_input()
     turns_taken += 1
 
     if len(player_guess) > 6:
@@ -149,10 +169,11 @@ while turns_taken <= max_turns:
             break
         else:
             print_stick_figure(6)
-            print("Incorrect guess , Game over!")
+            print("Incorrect guess , Game over! , the word was "+answer)
             break
     else:
         incorrect_guess = incorrect_guess + evaluate(player_guess)
         print_stick_figure(incorrect_guess)
-        if turns_taken == max_turns:
-            print("sorry but you are out of time.")
+        if incorrect_guess == max_turns:
+            print("sorry but you are out of guesses the word was "+answer)
+            break
