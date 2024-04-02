@@ -1,5 +1,6 @@
 import random
 import sys
+import subprocess
 
 
 def retrieve_list():
@@ -127,7 +128,15 @@ state = ""
 player_guess = ""
 turns_taken = 0
 incorrect_guess = 0
-max_turns = 6
+max_turns = len(answer)*2
+
+
+def play_again():
+    prompt = input("would you like to play again \n").lower()
+    if prompt == "yes":
+        subprocess.run(["python", "main.py"])
+    else:
+        print("thanks for playing.")
 
 
 def evaluate(guess):
@@ -144,10 +153,10 @@ def evaluate(guess):
 
     if "".join(generated_hint) == answer:
         print(f"you win it took {turns_taken} turn(s) , the word was {answer}")
-        sys.exit(0)
+        play_again()
 
     if not found:
-        if state== "you have already found : " + player_guess:
+        if state == "you have already found : " + player_guess:
             return 1
 
         state = "incorrect"
@@ -162,18 +171,20 @@ while turns_taken <= max_turns:
     player_guess = get_user_input()
     turns_taken += 1
 
-    if len(player_guess) > 6:
+    if len(player_guess) > 1:
 
         if player_guess == answer:
             print("correct it took this amount of turns : " + str(turns_taken))
             break
         else:
             print_stick_figure(6)
-            print("Incorrect guess , Game over! , the word was "+answer)
+            print("Incorrect guess , Game over! , the word was " + answer)
             break
     else:
         incorrect_guess = incorrect_guess + evaluate(player_guess)
         print_stick_figure(incorrect_guess)
-        if incorrect_guess == max_turns:
-            print("sorry but you are out of guesses the word was "+answer)
+        if incorrect_guess ==6:
+            print("sorry but you are out of guesses the word was " + answer)
             break
+
+play_again()
