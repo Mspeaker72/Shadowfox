@@ -137,6 +137,7 @@ def play_again():
         subprocess.run(["python", "main.py"])
     else:
         print("thanks for playing.")
+        sys.exit(0)
 
 
 def evaluate(guess):
