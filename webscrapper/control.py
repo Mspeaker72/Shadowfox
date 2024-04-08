@@ -1,4 +1,5 @@
 import requests
+import filter
 from bs4 import BeautifulSoup
 
 url = "https://shadowfox.in/"
@@ -18,7 +19,7 @@ soup = BeautifulSoup(retrieve_contents(url), 'html.parser')
 def find_all_links(context):
     result = context.find_all("a")
     # you can use get on class to find attribute
-    return [res.get("href") for res in result]
+    return [res.get("href") for res in result if res.get("href")]
 
 
 def images(context):
@@ -26,6 +27,7 @@ def images(context):
     return [res.get("src") for res in result]
 
 
-print(find_all_links(soup))
+filter.add(find_all_links(soup))
+print(filter.get_possible_contact())
 print(images(soup))
 
