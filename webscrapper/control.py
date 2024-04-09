@@ -2,7 +2,7 @@ import requests
 import filter
 from bs4 import BeautifulSoup
 
-url = "https://shadowfox.in/"
+url = "https://www.checkers.co.za/c-545/All-Departments/Food/Bakery/Bread-and-Rolls"
 
 
 # url = input("please provide url for site")

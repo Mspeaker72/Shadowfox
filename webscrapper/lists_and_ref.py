@@ -38,5 +38,6 @@ common_socials = [
     "MeWe"
 ]
 
+
 def get_socials():
     return common_socials
