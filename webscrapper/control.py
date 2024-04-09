@@ -21,13 +21,15 @@ def find_all_links(context):
     # you can use get on class to find attribute
     return [res.get("href") for res in result if res.get("href")]
 
+def find_all_paragraphs(context):
+    paragraphs = context.find_all("p")
+
+    return [paragraph.text for paragraph in paragraphs]
 
 def images(context):
     result = context.find_all("img")
     return [res.get("src") for res in result]
 
 
-filter.add(find_all_links(soup))
-print(filter.get_possible_contact())
-print(images(soup))
-
+filter.set_paragraphs(find_all_paragraphs(soup))
+filter.get_paragraph_tag_information()

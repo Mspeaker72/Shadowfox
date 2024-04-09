@@ -1,15 +1,57 @@
-mobile_telephone_numbers = []
+filtered_information = {'emails': [], 'mobile_telephone_numbers': [], "paragraphs": []}
 
 
-def add(collective: list):
-    for link in collective:
-        if str(link).__contains__("tel"):
-            mobile_telephone_numbers.append(link)
+def add(links: list):
+    """
+    Extracts mobile telephone numbers and email addresses from a list of links.
+
+    Args:
+        links (list): A list of strings representing links.
+
+    Returns:
+        None
+    """
+    for link in links:
+        if 'tel' in link:
+            filtered_information['mobile_telephone_numbers'].append(link)
+        if '@' in link and link not in filtered_information['emails']:
+            filtered_information['emails'].append(link)
 
 
 def get_possible_contact():
-    if len(mobile_telephone_numbers) == 0:
-        return "Sorry no mobile or telephone numbers were found"
+    """
+    Returns possible phone numbers contained in the list of links.
 
-    tel = ",".join(mobile_telephone_numbers)
-    return f"possible phone numbers contained : {tel}"
+    Returns:
+        str: A message containing the possible phone numbers, or an error message if none were found.
+    """
+    phone_numbers = filtered_information['mobile_telephone_numbers']
+    if not phone_numbers:
+        return "Sorry, no mobile or telephone numbers were found."
+
+    tel = ",".join(phone_numbers)
+    return f"Possible phone numbers contained: {tel}"
+
+
+def get_email_contact():
+    """
+    Returns the email addresses found in the list of links.
+
+    Returns:
+        str: A message containing the email addresses found, or an error message if none were found.
+    """
+    emails = filtered_information['emails']
+    if not emails:
+        return "Sorry, no email addresses were found."
+
+    email = ",".join(emails)
+    return f"The following email addresses were found: {email}"
+
+def get_paragraph_tag_information():
+    text_list =  filtered_information["paragraphs"]
+
+    for paragraph in text_list:
+        print(paragraph)
+
+def set_paragraphs(text: list):
+    filtered_information["paragraphs"] = text
