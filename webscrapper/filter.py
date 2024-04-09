@@ -73,3 +73,7 @@ def get_paragraph_tag_information():
 
 def set_paragraphs(text: list):
     filtered_information["paragraphs"] = text
+
+
+def get_socials():
+    return filtered_information["social_media_links"]
