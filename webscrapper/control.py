@@ -30,6 +30,7 @@ def images(context):
     result = context.find_all("img")
     return [res.get("src") for res in result]
 
-
-filter.set_paragraphs(find_all_paragraphs(soup))
-filter.get_paragraph_tag_information()
+print(find_all_links(soup))
+filter.add(find_all_links(soup))
+# filter.set_paragraphs(find_all_paragraphs(soup))
+# filter.get_paragraph_tag_information()

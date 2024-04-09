@@ -1,4 +1,11 @@
-filtered_information = {'emails': [], 'mobile_telephone_numbers': [], "paragraphs": []}
+import lists_and_ref
+
+filtered_information = {'emails': [],
+                        'mobile_telephone_numbers': [],
+                        "paragraphs": [],
+                        "social_media_links": [],
+                        "general_links": []}
+social_media_platforms = lists_and_ref.common_socials
 
 
 def add(links: list):
@@ -14,8 +21,17 @@ def add(links: list):
     for link in links:
         if 'tel' in link:
             filtered_information['mobile_telephone_numbers'].append(link)
-        if '@' in link and link not in filtered_information['emails']:
+        elif '@' in link and link not in filtered_information['emails']:
             filtered_information['emails'].append(link)
+        else:
+            # Check if the link contains any substrings representing social media platforms
+            for socials in social_media_platforms:
+                if str(link).title().__contains__(socials):
+                    filtered_information["social_media_links"].append(link)
+                    break
+            else:
+                # If the link doesn't match any category, add it to a general list of links
+                filtered_information['general_links'].append(link)
 
 
 def get_possible_contact():
@@ -47,11 +63,13 @@ def get_email_contact():
     email = ",".join(emails)
     return f"The following email addresses were found: {email}"
 
+
 def get_paragraph_tag_information():
-    text_list =  filtered_information["paragraphs"]
+    text_list = filtered_information["paragraphs"]
 
     for paragraph in text_list:
         print(paragraph)
+
 
 def set_paragraphs(text: list):
     filtered_information["paragraphs"] = text
