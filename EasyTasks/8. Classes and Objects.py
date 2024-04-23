@@ -28,7 +28,7 @@ super_heroes = [
     {"name": "Thor", "age": 1500, "gender": "Male", "super_power": "Super Energy", "weapon": "Mjölnir"},
     {"name": "Hawkeye", "age": 45, "gender": "Male", "super_power": "Fighting skills", "weapon": "Bow and Arrows"}
 ]
-
+# list of avenger objects
 avengers = [Avenger(hero["name"], hero["age"], hero["gender"], hero["super_power"], hero["weapon"]) for hero in
             super_heroes]
 

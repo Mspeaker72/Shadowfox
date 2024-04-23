@@ -189,3 +189,4 @@ while turns_taken <= max_turns:
             break
 
 play_again()
+sys.exit(0)
