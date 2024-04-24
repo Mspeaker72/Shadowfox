@@ -1,79 +1,66 @@
 import lists_and_ref
 
-filtered_information = {'emails': [],
-                        'mobile_telephone_numbers': [],
-                        "paragraphs": [],
-                        "social_media_links": [],
-                        "general_links": []}
-social_media_platforms = lists_and_ref.common_socials
+filtered_information = {
+    'emails': set(),
+    'mobile_telephone_numbers': set(),
+    "paragraphs": [],
+    "social_media_links": [],
+    "general_links": [],
+    "images": []
+}
+social_media_platforms = [platform.lower() for platform in lists_and_ref.common_socials]
 
 
 def add(links: list):
-    """
-    Extracts mobile telephone numbers and email addresses from a list of links.
-
-    Args:
-        links (list): A list of strings representing links.
-
-    Returns:
-        None
-    """
     for link in links:
+        link = link.lower()  # Convert link to lowercase for case-insensitive comparison
         if 'tel' in link:
-            filtered_information['mobile_telephone_numbers'].append(link)
+            filtered_information['mobile_telephone_numbers'].add(link)
         elif '@' in link and link not in filtered_information['emails']:
-            filtered_information['emails'].append(link)
+            filtered_information['emails'].add(link)
         else:
             # Check if the link contains any substrings representing social media platforms
-            for socials in social_media_platforms:
-                if str(link).title().__contains__(socials):
-                    filtered_information["social_media_links"].append(link)
-                    break
+            if any(platform in link for platform in social_media_platforms):
+                filtered_information["social_media_links"].append(link)
             else:
                 # If the link doesn't match any category, add it to a general list of links
                 filtered_information['general_links'].append(link)
 
 
 def get_possible_contact():
-    """
-    Returns possible phone numbers contained in the list of links.
-
-    Returns:
-        str: A message containing the possible phone numbers, or an error message if none were found.
-    """
     phone_numbers = filtered_information['mobile_telephone_numbers']
     if not phone_numbers:
         return "Sorry, no mobile or telephone numbers were found."
-
-    tel = ",".join(phone_numbers)
-    return f"Possible phone numbers contained: {tel}"
+    print("Possible phone numbers contained: ")
+    return f"{"\n".join(phone_numbers)}"
 
 
 def get_email_contact():
-    """
-    Returns the email addresses found in the list of links.
-
-    Returns:
-        str: A message containing the email addresses found, or an error message if none were found.
-    """
     emails = filtered_information['emails']
     if not emails:
         return "Sorry, no email addresses were found."
-
-    email = ",".join(emails)
-    return f"The following email addresses were found: {email}"
+    print("The following email addresses were found:")
+    return f" {"\n".join(emails)}"
 
 
 def get_paragraph_tag_information():
-    text_list = filtered_information["paragraphs"]
-
-    for paragraph in text_list:
-        print(paragraph)
+    print("text elements :")
+    return "\n".join(filtered_information["paragraphs"])
 
 
 def set_paragraphs(text: list):
     filtered_information["paragraphs"] = text
 
 
+def set_images(text: list):
+    filtered_information["images"] = text
+
+
 def get_socials():
-    return filtered_information["social_media_links"]
+    print("Possible social media links : \n")
+    return "\n".join(set(filtered_information["social_media_links"]))
+
+
+def get_images():
+    print("Present images : \n")
+    return "\n".join(set(filtered_information["images"]))

@@ -1,5 +1,6 @@
 import requests
 import filter
+import file_writer_controler
 from bs4 import BeautifulSoup
 
 
@@ -26,9 +27,6 @@ def images(context):
     return [res.get("src") for res in result]
 
 
-# filter.set_paragraphs(find_all_paragraphs(soup))
-# filter.get_paragraph_tag_information()
-
 def start():
     url = "https://shadowfox.in/"
 
@@ -36,15 +34,39 @@ def start():
     return BeautifulSoup(retrieve_contents(url), 'html.parser')
 
 
+def handle_command(command_function, file_name):
+    try:
+        result = command_function()
+        print(result)
+        file_writer_controler.write(result, file_name)
+    except Exception as e:
+        print(f"Error handling command: {e}")
+
+
+def user_input():
+    print("-" * 60)
+    command = input("What would you like to search:\n").lower()
+    print("-" * 60)
+    return command
+
+
 def main_loop(context):
     filter.add(find_all_links(context))
+    filter.set_images(images(context))
     while True:
-        command = input("what would you like to search :")
+        command = user_input()
 
-        if command.__contains__("social media"):
-            print(filter.get_socials())
-        elif command.__contains__("contact"):
-            print(filter.get_possible_contact())
+        if "social media" in command:
+            handle_command(filter.get_socials, "Socials.txt")
+        elif "contact details" in command:
+            handle_command(filter.get_possible_contact, "Contact_details.txt")
+        elif "email" in command:
+            handle_command(filter.get_email_contact, "email_details.txt")
+        elif "images" in command:
+            handle_command(filter.get_images, "img_details.txt")
+        elif "text" in command:
+            filter.set_paragraphs(find_all_paragraphs(context))
+            handle_command(filter.get_paragraph_tag_information,"text.txt")
 
 
 if __name__ == '__main__':
