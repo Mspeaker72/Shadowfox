@@ -31,7 +31,7 @@ def find_city(city):
     for country, cities in countries_dict.items():
         if city in cities:
             return country
-    return None
+    return
 
 
 country = find_city(city)
@@ -47,7 +47,7 @@ def find_country(city):
     for country, cities in countries_dict.items():
         if city in cities:
             return country
-    return None
+    return
 
 
 city1 = input("Enter the first city: \n")
