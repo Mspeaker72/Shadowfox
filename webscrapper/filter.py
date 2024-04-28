@@ -61,6 +61,12 @@ def get_socials():
     return "\n".join(set(filtered_information["social_media_links"]))
 
 
+def get_all_links():
+    print("Possible social media links : \n")
+    return "\n".join(set(filtered_information["general_links"]))
+
+
 def get_images():
+    print(filtered_information["images"])
     print("Present images : \n")
     return "\n".join(set(filtered_information["images"]))
