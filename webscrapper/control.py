@@ -28,9 +28,11 @@ def images(context):
 
 
 def start():
-    url = "https://shadowfox.in/"
+    global url
+    # url = "https://shadowfox.in/"
 
-    # url = input("please provide url for site")
+    url = input("please provide url for site: \n")
+    print("currently on : \n"+url)
     return BeautifulSoup(retrieve_contents(url), 'html.parser')
 
 
@@ -64,9 +66,12 @@ def main_loop(context):
             handle_command(filter.get_email_contact, "email_details.txt")
         elif "images" in command:
             handle_command(filter.get_images, "img_details.txt")
+
         elif "text" in command:
             filter.set_paragraphs(find_all_paragraphs(context))
-            handle_command(filter.get_paragraph_tag_information,"text.txt")
+            handle_command(filter.get_paragraph_tag_information, "text.txt")
+        elif "download" in command:
+            file_writer_controler.download(url, input("Please enter file_name :"))
 
 
 if __name__ == '__main__':
